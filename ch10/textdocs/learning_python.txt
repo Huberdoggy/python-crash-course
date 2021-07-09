@@ -1,0 +1,3 @@
+In Python you can loop through list values with 'for'.
+In Python you can use increment shorthand to add values to counter variables.
+In Python you can use Bool logic to determine if a loop should keep running.
