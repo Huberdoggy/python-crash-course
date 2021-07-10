@@ -1,4 +1,6 @@
 filename = 'textdocs/programming.txt'
 
-with open(filename, 'w') as file_object:
-    file_object.write("I luv programming")
+# Append mode is 'a' write mode is 'w' NOTE: write mode erases existing contents when opening
+with open(filename, 'a') as file_object:
+    file_object.write("\tI am learning about various data manipulation features in Py\n")
+    file_object.write("\tSuch as appending to files")
