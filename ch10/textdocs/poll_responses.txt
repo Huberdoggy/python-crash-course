@@ -1,0 +1,4 @@
+	**** POLL RESULTS ****
+1 - {'Name': 'Kyle', 'Response': 'test'} was added to the poll results on 2021-07-10 00:00:00
+2 - {'Name': 'Stephen', 'Response': 'test'} was added to the poll results on 2021-07-10 00:00:00
+3 - {'Name': 'Paul', 'Response': 'test'} was added to the poll results on 2021-07-10 00:00:00
