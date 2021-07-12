@@ -1,9 +1,9 @@
 from os import stat
-import sys
 
 doc_list = []
 prefix = ''
 suffix = '.txt'
+
 
 def count_words(filename):
     """Count the approximate number of words in a file"""
@@ -17,9 +17,10 @@ def count_words(filename):
         num_words = len(words)
         print(f"\n\tThe file {filename} has about {num_words} words.\n")
 
+
 while True:
     print("Enter a filename and I will count the words"
-      " (the '.txt' has been automatically included for you.")
+          " (the '.txt' has been automatically included for you.")
     choice = input("(or 'q' to quit and stop adding files) => ")
     if choice == 'q':
         break
