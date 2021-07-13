@@ -1,3 +1,6 @@
+"""Moved JSON dumping/reading into its own function. Allow the user to specify
+    their own items to add to the list on the command line"""
+
 import json
 import sys
 
