@@ -1,5 +1,11 @@
 import json
 
+def prompt_number(number):
+    file_name = 'textdocs/fav_num.json'
+    with open(file_name, 'a+') as f:
+        json.dump(number, f)
+        print(f"Okay. I've stored {number} in {file_name} for the future.")
+
 def get_number(number):
     file_name = 'textdocs/fav_num.json'
     try:
@@ -25,5 +31,7 @@ else:
     if existing_num:
         print(f"I already know your favorite number. It's {existing_num}")
     else:
-        pass
+        print("Looks like I need to update our records.")
+        existing_num = user_num
+        prompt_number(user_num)
 
