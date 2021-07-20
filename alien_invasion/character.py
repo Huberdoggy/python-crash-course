@@ -13,8 +13,8 @@ class Character:
         self.rect = self.image.get_rect()
 
         # Start the new character at the bottom left each time screen is redrawn
-        self.rect.bottomleft = self.screen_rect.midbottom
+        # self.rect.bottomleft = self.screen_rect.midbottom
 
     def blitme(self):
-        """Draw the man at his current location"""
-        self.screen.blit(self.image, self.rect)
+        """Draw the man at his current location at a custom location I want - left of the ship"""
+        self.screen.blit(self.image, (500, 900))
