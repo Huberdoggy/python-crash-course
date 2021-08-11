@@ -53,12 +53,8 @@ while True: # Run the program until they choose to end it
                     " (i.e, the number in feet) => ") # store number of feet as a variable
             if re.fullmatch(pattern, num_of_feet):
                 num_of_feet = float(num_of_feet)
-                # print(type(num_of_feet))
-                # print(num_of_feet)
             else:
                 num_of_feet = int(num_of_feet)
-                # print(type(num_of_feet))
-                # print(num_of_feet)
             total_calc = calcTotal(num_of_feet) # Pass the pre-determined float or int to my calculation function
             # Print a formatted result rounded to 2 decimal places
             print(f"Thank you!\nAccording to my calculations, {comp_name.title()} will require:" 
