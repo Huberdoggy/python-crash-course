@@ -1,9 +1,10 @@
 # Terminal colors, fun fonts, and essential modules for API calls
-import requests, re, sys, json
+import re, sys
 from pyfiglet import Figlet
 from termcolor import colored, cprint
 # Aliased function/s
-from cli_functions import make_menu as mm, build_request_url as build, print_the_weather
+from cli_functions import make_menu as mm, build_request_url as build, print_the_weather, \
+build_request_url_zip as build_z, make_request
 
 # Simple lambda functions to quickly convert print call color for 'x' argument provided
 print_green = lambda x: cprint(x, 'green')
@@ -39,43 +40,38 @@ try:
             if choice == 1:
                 check_bool = False
                 while not check_bool:
-                    city = input("Enter the city name to check current forecast => ")
-                    state = input("Now, enter the 2 letter state code (ex. 'MN') => ")
-                    check_okay = input(f"You entered '{city}' and state code '{state}'. Is this correct (y/n)? => ")
-                    if check_okay == 'y' or check_okay == 'Y':
-                        city = city.title()
-                        state = state.lower()
-                        check_bool = True
-                        full_url = build(city, state)
-                        try:
-                            response = requests.get(full_url)
-                            j_response = response.json() # 'response' now holds a lst of nested dictionaries
-                        # from the endpoint. We will check if the 'cod' key equals 404 - the web request status code
-                        # for 'resource not found'
-                            if ["cod"] != "404":
-                                nested_1 = j_response["main"] # Here, 'main' is an object of interest to me
-                                # returned by the request -> it's a nested dict
-                                # which holds useful data...in particular 'temperatures'
-                                current_temp = nested_1["temp"]
-                                current_pressure = nested_1["pressure"]
-                                current_humidity = nested_1["humidity"]
-                                # Now, traverse up to the 'weather' info
-                                w = j_response["weather"]
-                                # 'Weather description is located at [weather][0]
-                                weather_desc = w[0]["description"]
-                                print_the_weather(current_temp, current_pressure, current_humidity, weather_desc)
-                                go_again = input("Would you like to make a new query? (y/n) => ")
-                                if go_again == 'n' or go_again == 'N':
-                                    print(farewell)
-                                    sys.exit()
-                                else:
-                                    check_bool = False # Go back to city/state input
+                    ask = input("Would you like to query by zip-code or city? (c/z)? => ")
+                    if ask == 'c':
+                        city = input("Enter the city name to check current forecast => ")
+                        state = input("Now, enter the 2 letter state code (ex. 'MN') => ")
+                        check_okay = input(f"You entered '{city}' and state code '{state}'. Is this correct (y/n)? => ")
+                        if check_okay == 'y' or check_okay == 'Y':
+                            city = city.title()
+                            state = state.lower()
+                            check_bool = True
+                            full_url = build(city, state)
+                            my_dict = make_request(full_url)
+                            print_the_weather(my_dict)
+                            go_again = input("Would you like to make a new query? (y/n) => ")
+                            if go_again == 'n' or go_again == 'N':
+                                print(farewell)
+                                sys.exit()
                             else:
-                                print(f"Data for {city} not found.")
-                        except requests.exceptions.RequestException as e:
-                            raise sys.exit(e) # Make 'e' correspond to the error code. Hopefully catch any extraneous
-                    # else: # Ask for city again to verify spelling
-                    #     continue ... not needed now that bool is never flipped to 'True'
+                                check_bool = False  # Go back to city/state input
+                    elif ask == 'z':
+                        zip = input("Enter the five digit zip-code to query => ")
+                        check_okay  = input(f"You entered '{zip}'. Is this correct (y/n)? => ")
+                        if check_okay == 'y' or check_okay == 'Y':
+                            check_bool = True
+                            full_url = build_z(zip)
+                            my_dict = make_request(full_url)
+                            print_the_weather(my_dict)
+                            go_again = input("Would you like to make a new query? (y/n) => ")
+                            if go_again == 'n' or go_again == 'N':
+                                print(farewell)
+                                sys.exit()
+                            else:
+                                check_bool = False  # Go back to city/state input
             elif choice == 2:
                 pass
             elif choice == 3:
