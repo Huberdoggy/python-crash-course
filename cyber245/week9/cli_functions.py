@@ -1,5 +1,15 @@
 from secrets import api_key
 import requests, re, sys, json
+from termcolor import colored
+
+def compile_patterns(pattern_dict):
+    for value in pattern_dict.values():
+        try:
+            re.compile(value)
+            return pattern_dict
+        except re.error:
+            print(f"Invalid regex expression {value}")
+
 
 def make_menu(opt1, opt2, opt3):
     """Make a numeric option menu for the user
@@ -9,12 +19,14 @@ def make_menu(opt1, opt2, opt3):
                3: opt3,}
     return my_dict
 
+
 def build_request_url(city, state, units="&units=imperial"):
     """Consolidate work in main.py by creating a concatenated string,
     which will take input variables to construct the full URL for our endpoint request"""
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "q=" + city + "," + state + ",us" + units + "&appid=" + api_key
     return complete_url
+
 
 def build_request_url_zip(zip, units="&units=imperial"):
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
@@ -30,7 +42,7 @@ def make_request(full_url):
         # from the endpoint. We will check if the 'cod' key
         # equals 404 - the web request status code for 'resource not found'
         if ["cod"] != "404":
-            print(f"Connection to endpoint successful!")
+            print(colored(f"\nCONNECTION TO ENDPOINT SUCCESSFUL!", 'green'))
             nested_1 = j_response["main"]  # Here, 'main' is an object of interest to me
             # returned by the request -> it's a nested dict
             # which holds useful data...in particular 'temperatures'
