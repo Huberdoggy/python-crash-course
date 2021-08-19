@@ -90,6 +90,6 @@ try:
                 print(farewell)
                 break
 except ValueError: # Fail safe..
-    print("Failed to register. Please ensure you enter one of the numeric options.")
+    print("Failed to register.")
     sys.exit(1)
 

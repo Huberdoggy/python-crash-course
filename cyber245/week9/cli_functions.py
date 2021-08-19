@@ -49,7 +49,7 @@ def make_request(full_url):
             # I know the below solution probably isn't optimal but it works and helps clean up 'main.py'
             current_temp = nested_1["temp"]
             j_value_copies['temp'] = current_temp
-            current_pressure = nested_1["pressure"]
+            current_pressure = float(nested_1["pressure"]) * 0.01450377
             j_value_copies['pressure'] = current_pressure
             current_humidity = nested_1["humidity"]
             j_value_copies['humidity'] = current_humidity
@@ -73,7 +73,7 @@ def print_the_weather(j_dict):
     print(f"\tCURRENT FORECAST AT LOCATION")
     print(f"\t" + "-" * 30)
     print(f"\tTemperature in Fahrenheit: {str(j_dict['temp'])} degrees\n"
-          f"\tAtmospheric pressure is: {str(j_dict['pressure'])}\n"
+          f"\tAtmospheric pressure (in psi) is: {j_dict['pressure']:.1f}\n"
           f"\tHumidity is: {str(j_dict['humidity'])}%\n"
           f"\tForecast is showing: {str(j_dict['description'])}")
     print("\t" + "-" * 30 + "\n")
