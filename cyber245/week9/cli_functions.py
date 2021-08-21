@@ -49,7 +49,7 @@ def make_request(full_url):
             # I know the below solution probably isn't optimal but it works and helps clean up 'main.py'
             current_temp = nested_1["temp"]
             j_value_copies['temp'] = current_temp
-            current_pressure = float(nested_1["pressure"]) * 0.01450377
+            current_pressure = float(nested_1["pressure"]) * 0.01450377 # Convert hPa units to psi for convenience
             j_value_copies['pressure'] = current_pressure
             current_humidity = nested_1["humidity"]
             j_value_copies['humidity'] = current_humidity
