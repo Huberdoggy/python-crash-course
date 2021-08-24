@@ -11,12 +11,15 @@ def compile_patterns(pattern_dict):
             print(f"Invalid regex expression {value}")
 
 
-def make_menu(opt1, opt2, opt3):
+def make_menu(opt1, opt2, opt3, opt4=None):
     """Make a numeric option menu for the user
     Run as an infinite loop in main.py until 'quit' is chosen"""
     my_dict = {1: opt1,
                2: opt2,
-               3: opt3,}
+               3: opt3,
+               }
+    if opt4:
+        my_dict[4] = opt4
     return my_dict
 
 

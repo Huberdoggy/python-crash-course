@@ -32,6 +32,14 @@ def format_main_menu(render_str, m_dict):
         print_green("\t" * 3 + str(key) + ' - ' + m_dict[key])
     print("\t" * 3 + ("*" * 30))
 
+def show_garage(vehicle_lst):
+    if len(vehicle_lst) > 0:
+        print_green(f"\n\t*** CURRENT GARAGE ***\n")
+        for k, v in vehicle_lst.items():
+            print(f"{k} -> {str(v)}\n")
+    else:
+        print_red("The garage is currently empty.")
+
 
 def get_vehicle_attribs(vehicle):
     # print(vehicle)
@@ -103,15 +111,18 @@ class Vehicle:
         print("\t" * 3 + ("*" * 30))
         chosen_opt_lst = []
         try:
-            show_menu = True
-            while show_menu:
-                num_choice = int(input("=> "))
+            print("You must add at least 1 option.")
+            my_flag = True
+            while my_flag:
+                num_choice = int(input("Enter a number to add that option to your vehicle => "))
                 if num_choice in range(0, 8):
                     num_choice = m_dict[num_choice]
                     chosen_opt_lst.append(num_choice)
+                    print("[+] Added " + colored(num_choice, 'green') + " to your vehicle.")
                     if len(chosen_opt_lst) >= 1:
                         add_more = input("Add more? (y/n)? => ")
                         if add_more == 'n':
+                            screen_clear()
                             return chosen_opt_lst
                 else:
                     print_red(f"{num_choice} is an invalid choice.")

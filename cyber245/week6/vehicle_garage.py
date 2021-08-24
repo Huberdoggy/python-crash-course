@@ -1,7 +1,7 @@
 import sys
 from termcolor import cprint, colored
 from time import sleep
-from cars_and_trucks import screen_clear as s_c, format_main_menu as fmm,\
+from cars_and_trucks import screen_clear as s_c, format_main_menu as fmm, show_garage, \
 get_vehicle_attribs as get_attribs, Car, Truck
 sys.path.insert(1, '/home/huberdoggy/python-projects/python-crash-course/cyber245/week9') # for my previous functions
 from cli_functions import make_menu as mm
@@ -9,7 +9,7 @@ from cli_functions import make_menu as mm
 # Define various variables for fast color prints and strs
 print_red = lambda x: cprint(x, 'red') # Simple lambda to quickly convert print call color for 'x' argument provided
 print_green = lambda x: cprint(x, 'green')
-opts_lst = ['Build a Car', 'Build a Pickup Truck', 'Quit'] # To pass to 'mm' as main menu opts
+opts_lst = ['Build a Car', 'Build a Pickup Truck', 'Show Garage', 'Quit'] # To pass to 'mm' as main menu opts
 welcome_str = "Kyle\'s Virtual Garage"
 farewell = "Thank you for using the app. Good-bye!"
 vehicle_garage = {} # Will hold completed vehicles as key/vals
@@ -17,13 +17,13 @@ car_count = 0 # global so that if user re-enters after backing out to main menu,
 truck_count = 0
 
 #Build main menu
-main_menu_dict = mm(opts_lst[0], opts_lst[1], opts_lst[2])
+main_menu_dict = mm(opts_lst[0], opts_lst[1], opts_lst[2], opts_lst[3])
 fmm(welcome_str, main_menu_dict) # build and format w/ Figlet
 try:
     show_menu = True
     while show_menu:
         num_choice = int(input("=> "))
-        if num_choice in range(1, 3):
+        if num_choice in range(1, 5):
             if num_choice == 1: # For car creation
                 show_menu = False
                 color_choice = colored('Car', 'green')
@@ -55,7 +55,7 @@ try:
                               f" car to the garage.")
                     else:
                         print_red(f"Discarded the {new_car.model.title()}.")
-            else: # For truck creation
+            elif num_choice == 2: # For truck creation
                 color_choice = colored('Truck', 'green')
                 print(f"You will now be directed to {color_choice} specific questions...")
                 sleep(3)
@@ -85,8 +85,10 @@ try:
                               f" truck to the garage.")
                     else:
                         print_red(f"Discarded the {new_truck.model.title()}.")
-        elif num_choice == 3:
-            sys.exit(0)
+            elif num_choice == 3:
+                show_garage(vehicle_garage)
+            elif num_choice == 4:
+                sys.exit(0)
         else:
             print_red(f"Your selection {num_choice} is invalid.")
 except ValueError: # for strings or anything else
