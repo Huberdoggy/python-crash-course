@@ -35,7 +35,7 @@ try:
                     new_car = Car()
                     vroom = input(f"Your new {new_car.make.title()} {new_car.model.title()} "
                       f"is {new_car.color} and runs on {new_car.fuelType}.\nIt has a {new_car.engineSize} engine"
-                                  f" and {new_car.numDoors} doors.\n"
+                                  f" and {new_car.numDoors}.\n"
                                   f"Your options: {new_car.options}\nAdd this car to the garage (y/n)? => ")
                     if vroom == 'y':
                         car_count += 1

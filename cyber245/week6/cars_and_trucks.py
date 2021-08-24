@@ -8,9 +8,10 @@ print_green = lambda x: cprint(x, 'green') # Simple lambda to quickly convert
 print_red = lambda x: cprint(x, 'red')
 
 pattern = "^.[a-z]{4}.[a-z]{3}.[a-z]{6}\.Car.*" # for matching whether 'Car' or 'Truck' obj is passed to get_attribs func
-
+pattern2 = "^[a-zA-Z].*$"
 try:
     re.compile(pattern)
+    re.compile(pattern2)
 except re.error:
     print("Invalid regex expression")
 
@@ -71,7 +72,7 @@ class Vehicle:
 
     def build_opts_menu(self): # First, I'm going to build a dict of opts, similar to main-menu
         my_dict = {}
-        count = 0
+        count = 1
         for option in self.options:
             my_dict[count] = option
             count += 1
@@ -110,24 +111,35 @@ class Vehicle:
             print_green("\t" * 3 + str(key) + ' - ' + m_dict[key])
         print("\t" * 3 + ("*" * 30))
         chosen_opt_lst = []
+        my_flag = True
         try:
-            print("You must add at least 1 option.")
-            my_flag = True
+            # my_flag = True
             while my_flag:
-                num_choice = int(input("Enter a number to add that option to your vehicle => "))
-                if num_choice in range(0, 8):
-                    num_choice = m_dict[num_choice]
-                    chosen_opt_lst.append(num_choice)
-                    print("[+] Added " + colored(num_choice, 'green') + " to your vehicle.")
-                    if len(chosen_opt_lst) >= 1:
-                        add_more = input("Add more? (y/n)? => ")
-                        if add_more == 'n':
-                            screen_clear()
-                            return chosen_opt_lst
-                else:
-                    print_red(f"{num_choice} is an invalid choice.")
+                num_choice = input("Enter a number to add that option to your vehicle (or 'q' to return) => ")
+                if re.fullmatch(pattern2, num_choice.strip()):
+                    if num_choice == 'q' and len(chosen_opt_lst) < 1:
+                        print_red("You must add at least 1 option.")
+                    elif num_choice == 'q' and len(chosen_opt_lst) >= 1:
+                        screen_clear()
+                        return chosen_opt_lst
+                    else:
+                        print_red(f"Input {num_choice.strip()} is not an option.")
+                elif not re.fullmatch(pattern2, num_choice):
+                    num_choice = int(num_choice)
+                    if num_choice in range(1, 9):
+                        num_choice = m_dict[num_choice]
+                        chosen_opt_lst.append(num_choice)
+                        print("[+] Added " + colored(num_choice, 'green') + " to your vehicle.")
+                        if len(chosen_opt_lst) >= 1:
+                            add_more = input("Add more? (y/n)? => ")
+                            if add_more == 'n':
+                                screen_clear()
+                                return chosen_opt_lst
+                    else:
+                        print_red(f"{num_choice} is an invalid choice.")
         except ValueError:
-            print("Failed to register input")
+            print("I don't understand that option")
+            return
 
 
 class Car(Vehicle):
@@ -155,9 +167,9 @@ class Car(Vehicle):
     def getNumDoors(self):
         num_doors = int(input("2 or 4 doors (2/4)? => "))
         if num_doors == 4:
-            self.numDoors = "four"
+            self.numDoors = "four doors"
         else:
-            self.numDoors = "two"
+            self.numDoors = "two doors"
         return self.numDoors
 
 
