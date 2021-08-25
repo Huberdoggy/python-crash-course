@@ -10,15 +10,13 @@ def add_to_path(path_str):
         count += 1
 
 
-def expand_env_vars(path_str): # To keep it open, I wanted to expand the env var for 'Documents' depending on the
+def expand_env_vars(): # To keep it open, I wanted to expand the env var for 'Documents' depending on the
     # context where the user's running the program. Instead of blindly typing base directories and preventing typos,
     # this way, we can start in /home/'username'/Documents and customize a file name from there
     if name == 'nt':
-        windows = 'C:\\Users\\$USERNAME\\Documents'
-        exp_file_path = os.path.expandvars(windows)
+        return os.path.expandvars('C:\\Users\\$USERNAME\\Documents\\')
     else:
-        exp_file_path = os.path.expandvars(path_str)
-    return exp_file_path
+        return os.path.expandvars('$HOME/Documents')
 
 def does_fpath_exist(path_str, pattern_dict):
     if os.path.isdir(path_str):
@@ -30,9 +28,16 @@ def does_fpath_exist(path_str, pattern_dict):
                 print("Come back soon. Good-bye!")
                 sys.exit(0)
             elif re.fullmatch(pattern_dict.get('filename_input', 'empty'), filename.strip()):
-                full_f_path = path_str + '/' + filename.strip() + suffix
-                print(f"Full file path will be: {colored(full_f_path, 'green')}")
-                return full_f_path
+                if name == 'posix':
+                    full_f_path = path_str + '/' + filename.strip() + suffix
+                    print(f"\nDetected a " + colored('Linux', 'green') + ' operating system.'
+                          f"\nFull file path will be: {colored(full_f_path, 'green')}")
+                    return full_f_path
+                else:
+                    full_f_path = path_str + filename.strip() + suffix # Take out that forward slash
+                    print(f"\nDetected a " + colored('Windows', 'green') + ' operating system.'
+                      f"\nFull file path will be: {colored(full_f_path, 'green')}")
+                    return full_f_path
             else:
                 print(colored(f"File naming convention for {filename.strip()} is invalid.", 'red'))
     else:
@@ -47,8 +52,8 @@ def store_data(file_name, user_info): # take input vars and the full file path f
         info_dict = json.load(f)
         line = '' # I'm doing this so that I can construct a 'return' with the full formatted info sep by \n
         for key in info_dict:
-            line += f"{key}: {info_dict[key]}\n"
-        return f"\n*** CURRENT CONTENTS OF: {colored(file_name, 'green')} ***\n\n{line}"
+            line += f"\t\t\t{key}: {info_dict[key]}\n"
+        return f"\n\t*** CURRENT CONTENTS OF: {colored(file_name, 'green')} ***\n\n{line}"
 
 
 
