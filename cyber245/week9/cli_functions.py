@@ -1,6 +1,13 @@
+
 from secrets import api_key
 import requests, re, sys, json
 from termcolor import colored
+
+def add_to_path(path_lst):
+    count = 1
+    for value in path_lst:
+        sys.path.insert(count, path_lst[value])
+        count += 1
 
 def compile_patterns(pattern_dict):
     for value in pattern_dict.values():
@@ -80,3 +87,4 @@ def print_the_weather(j_dict):
           f"\tHumidity is: {str(j_dict['humidity'])}%\n"
           f"\tForecast is showing: {str(j_dict['description'])}")
     print("\t" + "-" * 30 + "\n")
+
