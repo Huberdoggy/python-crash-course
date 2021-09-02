@@ -1,4 +1,4 @@
-import re, sys
+import re, sys, os
 from time import sleep
 import PySimpleGUI as sg
 from pyfiglet import Figlet
@@ -40,15 +40,17 @@ while not valid_int:
             if still_running:
                 valid_int = False  # repeat the menu selection loop from the top...
         elif choice == 2:
-            # layout = [[sg.Text('Enter the city name'), sg.InputText()],
-            #           [sg.Text('Enter the state code'), sg.InputText()],
-            #           [sg.Button("Search Location"), sg.Button("Exit")]]  # Create the window
-            # window = sg.Window(welcome_str, layout)
-            # Create an event loop
+            cwd = os.getcwd()
+            fname = 'sunny.png'
+            im = f"{cwd}/images/{fname}"
             while True:
-                layout = [[sg.Text('Enter the city name'), sg.InputText()],
-                          [sg.Text('Enter the state code'), sg.InputText()],
-                          [sg.Button("Search Location"), sg.Button("Exit")]]  # Create the window
+                sg.theme('Dark Tan Blue')
+                layout = [ [sg.Image(im, size=(300, 300), pad=(100, 0))],
+                           [sg.Text('Enter the city name'), sg.InputText(size=(20,1))],
+                           [sg.Text('Enter the state code'), sg.InputText(size=(5,1))],
+                           [sg.Button("Search Location", pad=(20,20), size=(20, 1)),
+                            sg.Button("Exit", pad=(20,20), size=(20, 1))] ]
+                # Create the window
                 window = sg.Window(welcome_str, layout)
                 event, values = window.read()
                 # End program if user closes window or
@@ -56,7 +58,7 @@ while not valid_int:
                 if event == "Exit" or event == sg.WIN_CLOSED:
                     sys.exit(0)  # Just end it
                 else:
-                    city, state = values[0], values[1][:] # Get first input and nested state abbrev
+                    city, state = values[1], values[2][:] # Get first input and nested state abbrev
                     # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
                     # I cant really call 'print_the_weather' the same way in the GUI
                     full_url = build(str(city).title().strip(), str(state).lower().strip())
@@ -67,7 +69,7 @@ while not valid_int:
                        [sg.Text(f"Atmospheric pressure (in psi): {my_dict['pressure']:.1f}")],
                        [sg.Text(f"Humidity: {str(my_dict['humidity'])}%")],
                        [sg.Text(f"Forecast is showing: {str(my_dict['description'])}")],
-                       [sg.Button('New Query')], [sg.Button('Exit')] ]
+                       [sg.Button('New Query'), sg.Button('Exit')] ]
                     window = sg.Window(welcome_str, layout)
                     event, values = window.read()
                     if event == 'Exit' or event == sg.WIN_CLOSED:
