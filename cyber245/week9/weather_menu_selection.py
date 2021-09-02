@@ -1,12 +1,10 @@
 import re, sys
 from time import sleep
 import PySimpleGUI as sg
-import pyowm.commons.exceptions
-from pyowm import OWM
 from pyfiglet import Figlet
 from termcolor import cprint
 from open_weather_cli import choice_one
-import secrets
+from cli_functions import build_request_url as build, make_request
 
 mod_paths = {'week6': '/home/huberdoggy/python-projects/python-crash-course/cyber245/week6', }
 from cli_functions import add_to_path as atp, compile_patterns, make_menu as mm
@@ -42,46 +40,41 @@ while not valid_int:
             if still_running:
                 valid_int = False  # repeat the menu selection loop from the top...
         elif choice == 2:
-            owm = OWM(secrets.api_key)  # Initialize OWM wrapper with my API key
-            manager = owm.weather_manager()
-            layout = [[sg.Text('Enter the city name'), sg.InputText()],
-                      [sg.Button("Search City"), sg.Button("Exit")]]  # Create the window
-            window = sg.Window(welcome_str, layout)
+            # layout = [[sg.Text('Enter the city name'), sg.InputText()],
+            #           [sg.Text('Enter the state code'), sg.InputText()],
+            #           [sg.Button("Search Location"), sg.Button("Exit")]]  # Create the window
+            # window = sg.Window(welcome_str, layout)
             # Create an event loop
             while True:
+                layout = [[sg.Text('Enter the city name'), sg.InputText()],
+                          [sg.Text('Enter the state code'), sg.InputText()],
+                          [sg.Button("Search Location"), sg.Button("Exit")]]  # Create the window
+                window = sg.Window(welcome_str, layout)
                 event, values = window.read()
                 # End program if user closes window or
                 # presses the Exit button
                 if event == "Exit" or event == sg.WIN_CLOSED:
                     sys.exit(0)  # Just end it
                 else:
-                    break  # Continue onto the next step
-
-            try:
-                observe = manager.weather_at_place(values[0])
-            except pyowm.commons.exceptions.NotFoundError:
-                layout = [[sg.Text('Error, location not recognized. The program will now exit')],
-                          [sg.Button('OK')]]
-                window = sg.Window(welcome_str, layout)
-
-                while True:  # Pops a new box that just has the error and an 'OK' to exit
+                    city, state = values[0], values[1][:] # Get first input and nested state abbrev
+                    # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
+                    # I cant really call 'print_the_weather' the same way in the GUI
+                    full_url = build(str(city).title().strip(), str(state).lower().strip())
+                    my_dict = make_request(full_url)
+                    window.close()
+                    layout = [ [sg.Text(f"Current weather for {str(city).title().strip()}")],
+                       [sg.Text(f"Temperature in Fahrenheit: {str(my_dict['temp'])}")],
+                       [sg.Text(f"Atmospheric pressure (in psi): {my_dict['pressure']:.1f}")],
+                       [sg.Text(f"Humidity: {str(my_dict['humidity'])}%")],
+                       [sg.Text(f"Forecast is showing: {str(my_dict['description'])}")],
+                       [sg.Button('New Query')], [sg.Button('Exit')] ]
+                    window = sg.Window(welcome_str, layout)
                     event, values = window.read()
-                    if event == sg.WIN_CLOSED or event == 'OK':
+                    if event == 'Exit' or event == sg.WIN_CLOSED:
                         sys.exit(0)
-
-            w = observe.weather
-            window.close()
-            wind = round(w.wind(unit='miles_hour')['speed'], 2) # I just want this value, not sure what the others are
-            temp = round(w.temperature("fahrenheit")["temp"], 2) # Pull converted temp value from dict (not temp_min/max)
-            layout = [ [sg.Text(f"Current weather for {values[0]}")], [sg.Text(f"Forecast: {w.detailed_status}")],
-                       [sg.Text(f"Temperature: {temp}")], [sg.Text(f"Humidity: {w.humidity}%")],
-                       [sg.Text(f"Wind speed: {wind} MPH")], [sg.Button('Exit')] ]
-            window = sg.Window(welcome_str, layout)
-
-            while True:
-                event, values = window.read()
-                if event == sg.WIN_CLOSED or event == 'Exit':
-                    break
+                    else:
+                        window.close()
+                        continue
         elif choice == 3:
             s_c()
             print(farewell)
