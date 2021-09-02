@@ -1,7 +1,7 @@
 import re
 from termcolor import cprint
 # Aliased function/s
-from cli_functions import build_request_url as build, print_the_weather, \
+from cli_functions import compile_patterns, build_request_url as build, print_the_weather, \
     build_request_url_zip as build_z, make_request
 # Simple lambda functions to quickly convert print call color for 'x' argument provided
 print_red = lambda x: cprint(x, 'red')
@@ -10,6 +10,8 @@ reg_patterns = {
     'state_pattern': '^[a-zA-Z]{2}$',
     'zip_pattern': '^\d{5}',
 }
+
+compile_patterns(reg_patterns)
 
 def choice_one():
     while True:
