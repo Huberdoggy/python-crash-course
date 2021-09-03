@@ -1,14 +1,14 @@
-import re, sys, os
+import re, sys
 from time import sleep
 import PySimpleGUI as sg
 from pyfiglet import Figlet
 from termcolor import cprint
 from open_weather_cli import choice_one
-from cli_functions import build_request_url as build, make_request
-
+from cli_functions import build_request_url as build, build_request_url_zip as build_z,\
+make_request, add_to_path as atp, compile_patterns, make_menu as mm
+from gui_functions import ask_city_or_zip as acz, draw_zip_window as draw_z,\
+draw_main_window as draw_main, determine_image, weather_data_window as wdw
 mod_paths = {'week6': '/home/huberdoggy/python-projects/python-crash-course/cyber245/week6', }
-from cli_functions import add_to_path as atp, compile_patterns, make_menu as mm
-
 atp(mod_paths)  # insert my other modules in $PYTHONPATH.. using lst for room to expand if needed
 from cars_and_trucks import format_main_menu as f_m, screen_clear as s_c
 
@@ -40,43 +40,61 @@ while not valid_int:
             if still_running:
                 valid_int = False  # repeat the menu selection loop from the top...
         elif choice == 2:
-            cwd = os.getcwd()
-            fname = 'sunny.png'
-            im = f"{cwd}/images/{fname}"
             while True:
-                sg.theme('Dark Tan Blue')
-                layout = [ [sg.Image(im, size=(300, 300), pad=(100, 0))],
-                           [sg.Text('Enter the city name'), sg.InputText(size=(20,1))],
-                           [sg.Text('Enter the state code'), sg.InputText(size=(5,1))],
-                           [sg.Button("Search Location", pad=(20,20), size=(20, 1)),
-                            sg.Button("Exit", pad=(20,20), size=(20, 1))] ]
-                # Create the window
-                window = sg.Window(welcome_str, layout)
+                first_win = acz()
+                window = sg.Window('Pick One', first_win, size=(180, 100))
                 event, values = window.read()
-                # End program if user closes window or
-                # presses the Exit button
-                if event == "Exit" or event == sg.WIN_CLOSED:
-                    sys.exit(0)  # Just end it
-                else:
-                    city, state = values[1], values[2][:] # Get first input and nested state abbrev
-                    # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
-                    # I cant really call 'print_the_weather' the same way in the GUI
-                    full_url = build(str(city).title().strip(), str(state).lower().strip())
-                    my_dict = make_request(full_url)
+                if event == sg.WIN_CLOSED: # End program if user clicks the corner 'x'
+                    sys.exit(0)
+                elif event == "Search by Zip Code":
                     window.close()
-                    layout = [ [sg.Text(f"Current weather for {str(city).title().strip()}")],
-                       [sg.Text(f"Temperature in Fahrenheit: {str(my_dict['temp'])}")],
-                       [sg.Text(f"Atmospheric pressure (in psi): {my_dict['pressure']:.1f}")],
-                       [sg.Text(f"Humidity: {str(my_dict['humidity'])}%")],
-                       [sg.Text(f"Forecast is showing: {str(my_dict['description'])}")],
-                       [sg.Button('New Query'), sg.Button('Exit')] ]
+                    # Create the next window
+                    layout = draw_z()
                     window = sg.Window(welcome_str, layout)
                     event, values = window.read()
-                    if event == 'Exit' or event == sg.WIN_CLOSED:
+                    if event == "Exit" or event == sg.WIN_CLOSED:
+                        sys.exit(0)  # Just end it
+                    else:
+                        zip = values[1]
+                        full_url = build_z(str(zip).strip())
+                        my_dict = make_request(full_url)
+                        window.close()
+                        w_value = my_dict.get('description', 'none')
+                        im = determine_image(w_value)
+                        weather_data = wdw(zip, my_dict, im)
+                        print(weather_data)
+                        window = sg.Window(welcome_str, weather_data)
+                        event, values = window.read()
+                        if event == 'Exit' or event == sg.WIN_CLOSED:
+                            sys.exit(0)
+                        else:
+                            window.close()
+                            continue
+                else:
+                    window.close()
+                    layout = draw_main()
+                    window = sg.Window(welcome_str, layout)
+                    event, values = window.read()
+                    if event == "Exit" or event == sg.WIN_CLOSED:
                         sys.exit(0)
                     else:
+                        city, state = values[1], values[2][:] # Get first input and nested state abbrev
+                        # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
+                        # I cant really call 'print_the_weather' the same way in the GUI
+                        full_url = build(str(city).title().strip(), str(state).lower().strip())
+                        my_dict = make_request(full_url)
                         window.close()
-                        continue
+                        w_value = my_dict.get('description', 'none')
+                        im = determine_image(w_value)
+                        weather_data = wdw(city, my_dict, im)
+                        print(weather_data)
+                        window = sg.Window(welcome_str, weather_data)
+                        event, values = window.read()
+                        if event == 'Exit' or event == sg.WIN_CLOSED:
+                            sys.exit(0)
+                        else:
+                            window.close()
+                            continue
         elif choice == 3:
             s_c()
             print(farewell)
