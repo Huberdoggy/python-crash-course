@@ -6,8 +6,9 @@ from termcolor import cprint
 from open_weather_cli import choice_one
 from cli_functions import build_request_url as build, build_request_url_zip as build_z,\
 make_request, add_to_path as atp, compile_patterns, make_menu as mm
-from gui_functions import ask_city_or_zip as acz, draw_zip_window as draw_z,\
-draw_main_window as draw_main, determine_image, weather_data_window as wdw
+from gui_functions import ask_city_or_zip as acz, draw_zip_window as draw_z, \
+check_reg_city_state as check_cs, check_reg_zip as check_zip, \
+show_error_window as show_error, draw_main_window as draw_main, determine_image, weather_data_window as wdw
 mod_paths = {'week6': '/home/huberdoggy/python-projects/python-crash-course/cyber245/week6', }
 atp(mod_paths)  # insert my other modules in $PYTHONPATH.. using lst for room to expand if needed
 from cars_and_trucks import format_main_menu as f_m, screen_clear as s_c
@@ -23,6 +24,9 @@ farewell = "Thank you for using the app. Good-bye!"
 valid_int = False
 reg_patterns = {
     'menu_sel_pattern': '^[1-3]{1}',
+    'loc_pattern': '^[a-zA-Z]{2,}\s?([a-zA-Z]{2,})?$',
+    'state_pattern': '^[a-zA-Z]{2}$',
+    'zip_pattern': '^\d{5}',
 }
 compile_patterns(reg_patterns)  # I outsourced this to its own function to quickly compile all patterns in the list
 # Make the main program menu by passing indexes of 'opts_lst' to my 'make_menu' function
@@ -55,21 +59,26 @@ while not valid_int:
                     if event == "Exit" or event == sg.WIN_CLOSED:
                         sys.exit(0)  # Just end it
                     else:
-                        zip = values[1]
-                        full_url = build_z(str(zip).strip())
-                        my_dict = make_request(full_url)
-                        window.close()
-                        w_value = my_dict.get('description', 'none')
-                        im = determine_image(w_value)
-                        weather_data = wdw(zip, my_dict, im)
-                        print(weather_data)
-                        window = sg.Window(welcome_str, weather_data)
-                        event, values = window.read()
-                        if event == 'Exit' or event == sg.WIN_CLOSED:
-                            sys.exit(0)
+                        zip = str(values[1]).strip()
+                        result = check_zip(reg_patterns, zip)
+                        if result:
+                            full_url = build_z(zip)
+                            my_dict = make_request(full_url)
+                            window.close()
+                            w_value = my_dict.get('description', 'none')
+                            im = determine_image(w_value)
+                            weather_data = wdw(zip, my_dict, im)
+                            print(weather_data)
+                            window = sg.Window(welcome_str, weather_data)
+                            event, values = window.read()
+                            if event == 'Exit' or event == sg.WIN_CLOSED:
+                                sys.exit(0)
+                            else:
+                                window.close()
+                                continue
                         else:
                             window.close()
-                            continue
+                            show_error()
                 else:
                     window.close()
                     layout = draw_main()
@@ -81,20 +90,26 @@ while not valid_int:
                         city, state = values[1], values[2][:] # Get first input and nested state abbrev
                         # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
                         # I cant really call 'print_the_weather' the same way in the GUI
-                        full_url = build(str(city).title().strip(), str(state).lower().strip())
-                        my_dict = make_request(full_url)
-                        window.close()
-                        w_value = my_dict.get('description', 'none')
-                        im = determine_image(w_value)
-                        weather_data = wdw(city, my_dict, im)
-                        print(weather_data)
-                        window = sg.Window(welcome_str, weather_data)
-                        event, values = window.read()
-                        if event == 'Exit' or event == sg.WIN_CLOSED:
-                            sys.exit(0)
+                        city, state = str(city).strip(), str(state).strip()
+                        result = check_cs(reg_patterns, city, state)
+                        if result:
+                            full_url = build(city.title(), state.lower())
+                            my_dict = make_request(full_url)
+                            window.close()
+                            w_value = my_dict.get('description', 'none')
+                            im = determine_image(w_value)
+                            weather_data = wdw(city, my_dict, im)
+                            print(weather_data)
+                            window = sg.Window(welcome_str, weather_data)
+                            event, values = window.read()
+                            if event == 'Exit' or event == sg.WIN_CLOSED:
+                                sys.exit(0)
+                            else:
+                                window.close()
+                                continue
                         else:
                             window.close()
-                            continue
+                            show_error()
         elif choice == 3:
             s_c()
             print(farewell)

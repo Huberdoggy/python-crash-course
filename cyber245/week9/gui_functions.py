@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-import os
+import os, re
 
 def ask_city_or_zip():
     sg.theme('Dark Tan Blue')
@@ -52,3 +52,25 @@ def weather_data_window(city_name, j_dict, im):
               [sg.Text(f"Forecast is showing: {str(j_dict['description'])}")],
               [sg.Button('New Query'), sg.Button('Exit')] ]
     return layout
+
+def show_error_window():
+    layout = [ [sg.Text('An error has occured!')], [sg.Text('Please check your input and try again')],
+               [sg.Button('Ok')] ]
+    # return layout
+    window = sg.Window('ERROR', layout)
+    event, values = window.read()
+    if event == 'Ok' or event == sg.WIN_CLOSED:
+        window.close()
+
+def check_reg_city_state(pattern_dict, input_var1, input_var2):
+    if not (re.fullmatch(pattern_dict.get('loc_pattern', 'empty'), input_var1)
+            and re.fullmatch(pattern_dict.get('state_pattern', 'empty'), input_var2)):
+        return False
+    else:
+        return True
+
+def check_reg_zip(pattern_dict, input_var1):
+    if not (re.fullmatch(pattern_dict.get('zip_pattern', 'empty'), input_var1)):
+        return False
+    else:
+        return True
