@@ -10,10 +10,10 @@ import random
 import time
 
 # Added this function to consolidate some things at the bottom
-def should_keep_playing(play_again='yes'):
+def should_keep_playing(input_var):
     print('Do you want to play again? (yes or no)')
     get_new_input = input('=> ')
-    if get_new_input == play_again or get_new_input == 'y':
+    if get_new_input == input_var or get_new_input == 'y': # if they re-enter 'yes' or 'y'
         return True
     else:
         return # will then exit the program as my variable for 'should_keep_playing' will check if False
@@ -56,13 +56,13 @@ def checkCave(chosenCave):
 
 
 playAgain = 'yes'
-while playAgain == 'yes' or playAgain == 'y':  # Fixed - equality check needs to be double-equal for bool,
-    # not assignment
+while True:  # Fixed - equality check needs to be double-equal for bool,
+    # not assignment. Then, I modified this for my function to fix redundancy and simplify
     displayIntro()
     caveNumber = chooseCave()  # fixed - function name typo - need uppercase 'C' in chooseCave
     checkCave(caveNumber)
 
-    check_again = should_keep_playing()
+    check_again = should_keep_playing(playAgain)
     if not check_again:
         print("Thanks for playing") # typo - fixed to 'playing'
         break
