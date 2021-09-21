@@ -9,14 +9,17 @@ def add_to_path(path_lst):
         sys.path.insert(count, path_lst[value])
         count += 1
 
-def compile_patterns(pattern_dict):
-    for value in pattern_dict.values():
+def compile_patterns(pattern_dict): #Modified this to pass dic and
+    # follow proper method of compiling raw regex - stored in new returned dict
+    new_dict = {}
+    for str_pattern in pattern_dict:
         try:
-            re.compile(value)
-            return pattern_dict
+            raw_reg = re.compile(fr'{pattern_dict[str_pattern]}')
+            new_dict[str_pattern] = raw_reg
+            # return new_dict
         except re.error:
-            print(f"Invalid regex expression {value}")
-
+            print(f"Invalid regex expression {pattern_dict[str_pattern]}")
+    return new_dict
 
 def make_menu(opt1, opt2, opt3, opt4=None):
     """Make a numeric option menu for the user

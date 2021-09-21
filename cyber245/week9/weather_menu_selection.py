@@ -28,14 +28,14 @@ reg_patterns = {
     'state_pattern': '^[a-zA-Z]{2}$',
     'zip_pattern': '^\d{5}',
 }
-compile_patterns(reg_patterns)  # I outsourced this to its own function to quickly compile all patterns in the list
+raw_reg_dict = compile_patterns(reg_patterns)  # I outsourced this to its own function to quickly compile all patterns in the list
 # Make the main program menu by passing indexes of 'opts_lst' to my 'make_menu' function
 options_dict = mm(opts_lst[0], opts_lst[1], opts_lst[2])
 
 while not valid_int:
     f_m(welcome_str, options_dict)
     choice = input("=> ")
-    if re.fullmatch(reg_patterns.get('menu_sel_pattern'), choice):
+    if re.fullmatch(raw_reg_dict.get('menu_sel_pattern'), choice):
         valid_int = True
         choice = int(choice)  # After safely passing check, this can convert
         if choice == 1:
@@ -60,7 +60,7 @@ while not valid_int:
                         sys.exit(0)  # Just end it
                     else:
                         zip = str(values[1]).strip()
-                        result = check_zip(reg_patterns, zip)
+                        result = check_zip(raw_reg_dict, zip)
                         if result:
                             full_url = build_z(zip)
                             my_dict = make_request(full_url)
@@ -91,7 +91,7 @@ while not valid_int:
                         # Then, basically replicate everything from 'cli_functions' but manipulate the printing since
                         # I cant really call 'print_the_weather' the same way in the GUI
                         city, state = str(city).strip(), str(state).strip()
-                        result = check_cs(reg_patterns, city, state)
+                        result = check_cs(raw_reg_dict, city, state)
                         if result:
                             full_url = build(city.title(), state.lower())
                             my_dict = make_request(full_url)
