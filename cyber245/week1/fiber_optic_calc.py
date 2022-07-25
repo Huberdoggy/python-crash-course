@@ -15,6 +15,7 @@ If they purchase more than 500 feet they will be charged $0.50 per foot.
 """
 
 import re
+
 # My regular expression will match user input of at least 2 digits followed by a literal '.' and 2 or more digits
 pattern = "\d{2,}\.\d{2,}"
 
@@ -23,6 +24,7 @@ try:
     # print("Valid regex pattern")
 except re.error:
     print("Non valid regex pattern.")
+
 
 def calcTotal(number):
     # If number is greater than 100, apply discount appropriately
@@ -35,7 +37,7 @@ def calcTotal(number):
     elif number > 500:
         number *= 0.50
     else:
-    # Multiply the total number of feet by 0.87
+        # Multiply the total number of feet by 0.87
         number *= 0.87
     return number
 
@@ -43,22 +45,29 @@ def calcTotal(number):
 prog_name = "kyle's fiber-optic cable price calculator"
 message = print(f"\t***{prog_name.upper()}***")
 
-while True: # Run the program until they choose to end it
-    comp_name = input("Please enter the name of your company (or press 'q' to quit) => ") # get their company name
-    if comp_name == 'q':
+while True:  # Run the program until they choose to end it
+    comp_name = input(
+        "Please enter the name of your company (or press 'q' to quit) => "
+    )  # get their company name
+    if comp_name == "q":
         break
     else:
         try:
-            num_of_feet = input("Now, please enter the required amount of fiber cable to be installed"
-                    " (i.e, the number in feet) => ") # store number of feet as a variable
+            num_of_feet = input(
+                "Now, please enter the required amount of fiber cable to be installed"
+                " (i.e, the number in feet) => "
+            )  # store number of feet as a variable
             if re.fullmatch(pattern, num_of_feet):
                 num_of_feet = float(num_of_feet)
             else:
                 num_of_feet = int(num_of_feet)
-            total_calc = calcTotal(num_of_feet) # Pass the pre-determined float or int to my calculation function
+            total_calc = calcTotal(
+                num_of_feet
+            )  # Pass the pre-determined float or int to my calculation function
             # Print a formatted result rounded to 2 decimal places
-            print(f"Thank you!\nAccording to my calculations, {comp_name.title()} will require:" 
-                  f" ${total_calc:.2f} dollars to accommodate {num_of_feet} feet of fiber optic cable.")
+            print(
+                f"Thank you!\nAccording to my calculations, {comp_name.title()} will require:"
+                f" ${total_calc:.2f} dollars to accommodate {num_of_feet} feet of fiber optic cable."
+            )
         except ValueError:
             print("Check you input, something else is going on...")
-

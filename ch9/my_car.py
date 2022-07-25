@@ -1,6 +1,6 @@
 from classes import Car
 
-new_car = Car('audi', 'a6', '2016')
+new_car = Car("audi", "a6", "2016")
 print(new_car.get_descriptive_name())
 new_car.update_odometer(15_000)
 new_car.read_odometer()

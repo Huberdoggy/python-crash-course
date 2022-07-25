@@ -6,11 +6,11 @@ question = "What language did you first learn to speak?"
 my_survey = AnonymousSurvey(question)
 
 # Show the question and store the responses to the question
-my_survey.show_question() # Uses our 'question' param from __init___
+my_survey.show_question()  # Uses our 'question' param from __init___
 print("Enter 'q' at any time to quit\n")
 while True:
     response = input("Language => ")
-    if response == 'q':
+    if response == "q":
         break
     else:
         my_survey.store_response(response)

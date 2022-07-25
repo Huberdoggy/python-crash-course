@@ -184,7 +184,6 @@
 #         print(f"\n{name.title()} really likes {language.upper()}. Only that one.")
 
 
-
 ## MORE PRACTICE....
 
 # people = {
@@ -264,4 +263,3 @@
 #         elif str(detail) == 'fact' and city.lower() == 'los angeles':
 #             print(f"L.A is the {info['fact']}.")
 #     print('-' * 35)
-

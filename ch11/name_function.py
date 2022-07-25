@@ -1,4 +1,4 @@
-def get_formatted_name(first, last, middle=''):
+def get_formatted_name(first, last, middle=""):
     """Generate a neatly formatted full name"""
     # Make middle name optional (move to the end param, so that test-case passes. Use 'if' condition to check
     if middle:
@@ -6,5 +6,3 @@ def get_formatted_name(first, last, middle=''):
     else:
         full_name = f"{first} {last}"
     return full_name.title()
-
-

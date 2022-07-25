@@ -8,15 +8,14 @@ class NamesTestCase(unittest.TestCase):
 
     def test_first_last_name(self):
         """Do names like Paul Huber work?"""
-        formatted_name = get_formatted_name('paul', 'huber')
-        self.assertEqual(formatted_name, 'Paul Huber')
-
+        formatted_name = get_formatted_name("paul", "huber")
+        self.assertEqual(formatted_name, "Paul Huber")
 
     def test_first_last_middle_name(self):
         """Do names like Kyle James Huber work?"""
-        formatted_name = get_formatted_name('kyle', 'huber', 'james')
-        self.assertEqual(formatted_name, 'Kyle James Huber')
+        formatted_name = get_formatted_name("kyle", "huber", "james")
+        self.assertEqual(formatted_name, "Kyle James Huber")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

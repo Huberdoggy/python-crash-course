@@ -1,5 +1,6 @@
 import pygame
 
+
 class Character:
     """A class to manage my .BMP guy"""
 
@@ -9,7 +10,7 @@ class Character:
         self.screen_rect = ai_game.screen.get_rect()
 
         # Load the character .BMP and get its rect
-        self.image = pygame.image.load('images/doomguy_green2_large.png')
+        self.image = pygame.image.load("images/doomguy_green2_large.png")
         self.rect = self.image.get_rect()
 
         # Start the new character at the bottom left each time screen is redrawn

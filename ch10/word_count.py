@@ -1,14 +1,14 @@
 from os import stat
 
 doc_list = []
-prefix = ''
-suffix = '.txt'
+prefix = ""
+suffix = ".txt"
 
 
 def count_words(filename):
     """Count the approximate number of words in a file"""
     try:
-        with open(filename, encoding='utf-8') as f:
+        with open(filename, encoding="utf-8") as f:
             contents = f.read()
     except FileNotFoundError:
         print(f"Sorry, the file {filename} doesn't exist..")
@@ -19,12 +19,14 @@ def count_words(filename):
 
 
 while True:
-    print("Enter a filename and I will count the words"
-          " (the '.txt' has been automatically included for you.")
+    print(
+        "Enter a filename and I will count the words"
+        " (the '.txt' has been automatically included for you."
+    )
     choice = input("(or 'q' to quit and stop adding files) => ")
-    if choice == 'q':
+    if choice == "q":
         break
-    prefix = 'textdocs/{0}{1}'.format(choice, suffix)
+    prefix = "textdocs/{0}{1}".format(choice, suffix)
     try:
         if stat(prefix).st_size > 0:
             print(f"File name is not empty. Just to inform you..")
@@ -35,7 +37,7 @@ while True:
         doc_list.append(prefix)
         print(f"Now adding {prefix} to list")
         print(doc_list)
-        prefix = ''
+        prefix = ""
 print(f"\n\t***THE WORD COUNT OF BOOKS IN THE LIST***")
 for doc in doc_list:
     count_words(doc)

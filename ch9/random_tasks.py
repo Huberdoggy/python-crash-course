@@ -29,11 +29,27 @@ from random import randint, choice
 
 # LOTTERY
 
+
 def lucky_day(my_ticket):
     win = False
     count = 1
-    all_values = (5005, 200, 'A', 30.5, 15025,
-                  'K', 'z', 42, 7020, 'g', 'H', 14, 29, 855, 56)
+    all_values = (
+        5005,
+        200,
+        "A",
+        30.5,
+        15025,
+        "K",
+        "z",
+        42,
+        7020,
+        "g",
+        "H",
+        14,
+        29,
+        855,
+        56,
+    )
     winning_values = []
     while not win:
         for i in range(1, 5):
@@ -41,7 +57,7 @@ def lucky_day(my_ticket):
             winning_values.append(selected_winner)
         if my_ticket == winning_values:
             win = True
-            print('\n')
+            print("\n")
             string = f"Congrats Kyle, you won the lottery!!!"
             print(string.upper())
             print(f"Total number of rounds it took to get a win: {count}")
@@ -54,5 +70,5 @@ def lucky_day(my_ticket):
             count += 1
 
 
-ticket = ['K', 200, 'H', 42]
+ticket = ["K", 200, "H", 42]
 lucky_day(ticket)

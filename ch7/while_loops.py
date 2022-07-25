@@ -113,6 +113,3 @@
 # print("\n---VOTING RESULTS---")
 # for name, response in sorted(responses.items()):
 #     print(f"{name.title()} would like to travel to {response.title()}.")
-
-
-

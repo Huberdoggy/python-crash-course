@@ -1,13 +1,15 @@
 import json
 
+
 def prompt_number(number):
-    file_name = 'textdocs/fav_num.json'
-    with open(file_name, 'a+') as f:
+    file_name = "textdocs/fav_num.json"
+    with open(file_name, "a+") as f:
         json.dump(number, f)
         print(f"Okay. I've stored {number} in {file_name} for the future.")
 
+
 def get_number(number):
-    file_name = 'textdocs/fav_num.json'
+    file_name = "textdocs/fav_num.json"
     try:
         with open(file_name) as f:
             contents = f.readlines()
@@ -15,16 +17,18 @@ def get_number(number):
                 # Have to strip the literal double quotes from 'item' for this to work
                 existing_num = item.strip('""')
                 if existing_num == number:
-                  return existing_num
+                    return existing_num
     except FileNotFoundError:
-        with open(file_name, 'w') as f:
+        with open(file_name, "w") as f:
             json.dump(number, f)
-            print(f"We'll remember your favorite number is {number} when you return.")
+            print(
+                f"We'll remember your favorite number is {number} when you return."
+            )
             return None
 
 
 user_num = input("Enter your favorite number (or 'q' to quit) => ")
-if user_num == 'q':
+if user_num == "q":
     print("Okay, exiting the program...")
 else:
     existing_num = get_number(user_num)
@@ -34,4 +38,3 @@ else:
         print("Looks like I need to update our records.")
         existing_num = user_num
         prompt_number(user_num)
-

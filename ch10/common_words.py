@@ -2,12 +2,12 @@
     occurrences of the word 'the' appear. Will user lower() method to include case
     sensitivity"""
 
-suffix = '.txt'
+suffix = ".txt"
 
 
 def occurence_check(filename, word_to_check):
     try:
-        with open(filename, encoding='utf-8') as f:
+        with open(filename, encoding="utf-8") as f:
             contents = f.read()
     except FileNotFoundError:
         print(f"Sorry, the file {filename} doesn't exist..")
@@ -25,8 +25,11 @@ def occurence_check(filename, word_to_check):
 
 
 file = input("Enter a filename: ")
-full_path = 'textdocs/{0}{1}'.format(file, suffix)
-your_word = input(f"Now, enter a word, and I will see how man times it appears in {full_path}: ")
+full_path = "textdocs/{0}{1}".format(file, suffix)
+your_word = input(
+    f"Now, enter a word, and I will see how man times it appears in {full_path}: "
+)
 num_of_occurrences = occurence_check(full_path, your_word)
-print(f"\n\tThe file has about {num_of_occurrences} occurrences of the word '{your_word}'.")
-
+print(
+    f"\n\tThe file has about {num_of_occurrences} occurrences of the word '{your_word}'."
+)

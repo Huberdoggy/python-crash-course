@@ -13,14 +13,19 @@ class AlienInvasion:
         """Initialize the game, create game resources"""
         pygame.init()
         self.settings = Settings()
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
+        self.screen = pygame.display.set_mode(
+            (self.settings.screen_width, self.settings.screen_height)
+        )
         # Note, argument for screen size is a tuple, therefore,
         # nest the dimensions inside the parentheses for the method call
         pygame.display.set_caption("Kyle's Alien Invasion")
         self.ship = Ship(
-            self)  # Remember, requires 1 argument in the Ship module - (ai_game) to inherit the screen resources, etc
+            self
+        )  # Remember, requires 1 argument in the Ship module - (ai_game) to inherit the screen resources, etc
         # When imported here, this corresponds to an instance of 'AlienInvasion' which we're passing to it
-        self.bullets = pygame.sprite.Group()  # manage bullets that have already been fired using this built-in
+        self.bullets = (
+            pygame.sprite.Group()
+        )  # manage bullets that have already been fired using this built-in
         self.character = Character(self)
 
     def run_game(self):
@@ -95,6 +100,6 @@ class AlienInvasion:
 
 # If file is directly called, make an instance of AlienInvasion class and run the main loop
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ai = AlienInvasion()
     ai.run_game()

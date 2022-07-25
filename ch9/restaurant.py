@@ -11,6 +11,6 @@ from classes import Restaurant, IceCreamStand as Ice
 # print(f"{restaurant.restaurant_name} has served {restaurant.number_served} people so far.")
 
 
-blue_bunny = Ice('Happy Ice-Cream Truck', 'gourmet-gelatto')
+blue_bunny = Ice("Happy Ice-Cream Truck", "gourmet-gelatto")
 blue_bunny.add_flavors()
 blue_bunny.print_flavors()

@@ -14,8 +14,6 @@
 #     print(f"Friend likes {pizza}.")
 
 
-
-
 #
 # print("They are all tastey.")
 #
@@ -75,4 +73,3 @@
 # foods = ('apple', 'pear', 'mac n\' cheese', 'alfredo')
 # for food in foods:
 #     print(f"{food}", end=' ')
-

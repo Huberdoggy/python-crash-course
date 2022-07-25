@@ -30,8 +30,8 @@
 
 # RESTAURANTS
 
-class Restaurant:
 
+class Restaurant:
     def __init__(self, restaurant_name, cuisine_type):
         self.restaurant_name = restaurant_name
         self.cuisine_type = cuisine_type
@@ -42,20 +42,24 @@ class Restaurant:
         print(f"The current menu includes {self.cuisine_type} food.")
 
     def open_restaurant(self):
-        print(f"The restaurant {self.restaurant_name} is now open for business!!")
+        print(
+            f"The restaurant {self.restaurant_name} is now open for business!!"
+        )
 
     def people_served(self, number):
         if number >= self.number_served:
             self.number_served = number
         else:
             print(f"You can't go back in time! Rejecting {number}.")
-            print(f"The current total number of people served is still {self.number_served}.")
+            print(
+                f"The current total number of people served is still {self.number_served}."
+            )
 
 
 # ICE CREAM STAND ADDITION
 
-class IceCreamStand(Restaurant):
 
+class IceCreamStand(Restaurant):
     def __init__(self, restaurant_name, cuisine_type):
         super().__init__(restaurant_name, cuisine_type)
         self.flavors = []
@@ -63,9 +67,11 @@ class IceCreamStand(Restaurant):
     def add_flavors(self):
         flavor_list = []
         while len(flavor_list) < 6:
-            choose = input("Enter some ice-cream flavors"
-                           " Or enter 'q' to quit any time => ")
-            if choose == 'q':
+            choose = input(
+                "Enter some ice-cream flavors"
+                " Or enter 'q' to quit any time => "
+            )
+            if choose == "q":
                 break
             if len(flavor_list) == 6:
                 break
@@ -73,7 +79,7 @@ class IceCreamStand(Restaurant):
                 flavor_list.append(choose)
                 if len(flavor_list) >= 3 and len(flavor_list) < 6:
                     ask = input("Still want to add more? (y/n) => ")
-                    if ask == 'n':
+                    if ask == "n":
                         break
 
         for flavor in flavor_list:
@@ -81,7 +87,7 @@ class IceCreamStand(Restaurant):
 
     def print_flavors(self):
         print("-" * 50)
-        print("****FLAVOR INVENTORY****" + '\n')
+        print("****FLAVOR INVENTORY****" + "\n")
         print("The Blue Bunny truck has:\n\t")
         for flavor in self.flavors:
             print(f"{flavor.title()}")
@@ -89,7 +95,6 @@ class IceCreamStand(Restaurant):
 
 # USERS AND LOGIN ATTEMPTS
 class User:
-
     def __init__(self, first_name, last_name, age, hair_color, login_attempts):
         self.first_name = first_name
         self.last_name = last_name
@@ -98,11 +103,15 @@ class User:
         self.login_attempts = login_attempts
 
     def describe_user(self):
-        print(f"\tMy name is {self.first_name} {self.last_name}\n"
-              f"\tI am {self.age}, and my hair color is {self.hair_color}.")
+        print(
+            f"\tMy name is {self.first_name} {self.last_name}\n"
+            f"\tI am {self.age}, and my hair color is {self.hair_color}."
+        )
 
     def greet_user(self):
-        print(f"\nHello there {self.first_name} {self.last_name}!! I really like your {self.hair_color} hair!")
+        print(
+            f"\nHello there {self.first_name} {self.last_name}!! I really like your {self.hair_color} hair!"
+        )
 
     def increment_login_attempts(self, count):
         if self.login_attempts >= 0 and count > 0:
@@ -112,17 +121,20 @@ class User:
             print("Can't accept a negative value for login attempts.")
         elif count == 0:
             print(f"Please enter an int greater than {count}")
-        print(f"Current login attempts for {self.first_name}: {self.login_attempts}")
+        print(
+            f"Current login attempts for {self.first_name}: {self.login_attempts}"
+        )
 
     def reset_login_attempts(self):
         self.login_attempts = 0
-        print(f"Reset login attempts. Current login attempts for {self.first_name} is {self.login_attempts}")
+        print(
+            f"Reset login attempts. Current login attempts for {self.first_name} is {self.login_attempts}"
+        )
 
 
 class Privileges:
-
     def __init__(self):
-        self.privileges = ['can add user', 'can delete user', 'can ban user']
+        self.privileges = ["can add user", "can delete user", "can ban user"]
 
     def show_privileges(self):
         print(f"The Admin has the following elevated permissions:")
@@ -131,16 +143,17 @@ class Privileges:
 
 
 class Admin(User):
-
     def __init__(self, first_name, last_name, age, hair_color, login_attempts):
-        super().__init__(first_name, last_name, age, hair_color, login_attempts)
+        super().__init__(
+            first_name, last_name, age, hair_color, login_attempts
+        )
         self.privileges = Privileges()
 
 
 # MANIPULATING A CAR CLASS WITH A DEFAULT VALUE
 
-class Car:
 
+class Car:
     def __init__(self, make, model, year):
         self.make = make
         self.model = model
@@ -162,7 +175,9 @@ class Car:
         if mileage >= self.odometer_reading:
             self.odometer_reading = mileage
         else:
-            print(f"You can't rollback an odometer! Rejecting number {mileage}")
+            print(
+                f"You can't rollback an odometer! Rejecting number {mileage}"
+            )
 
     def increment_odometer(self, miles):
         """Add the given amt to the odometer reading"""
@@ -171,7 +186,7 @@ class Car:
 
 #
 # # Modularize 'battery' into its own class to prevent clutter in 'ElectricCar'
-class Battery():
+class Battery:
     """A simple attempt to model a battery for an electric car"""
 
     def __init__(self, battery_size=75):
@@ -194,7 +209,9 @@ class Battery():
         if self.battery_size != 100:
             old_bat = self.battery_size
             self.battery_size = 100
-        print(f"Battery size was set to {old_bat}, but now it's {self.battery_size}")
+        print(
+            f"Battery size was set to {old_bat}, but now it's {self.battery_size}"
+        )
 
 
 # # Define a child class which inherits from 'Car'
@@ -214,5 +231,3 @@ class ElectricCar(Car):
     def fill_gas_tank(self):
         """Electric cars don't have gas tanks"""
         print("This car doesn't need a gas tank!")
-
-

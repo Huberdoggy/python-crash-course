@@ -18,5 +18,4 @@ class AnonymousSurvey:
         """Show all results that have been given"""
         print("SURVEY RESULTS:\n")
         for response in self.responses:
-            print(f'- {response}')
-
+            print(f"- {response}")

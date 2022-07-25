@@ -1,14 +1,14 @@
-filename = 'textdocs/learning_python.txt'
+filename = "textdocs/learning_python.txt"
 
 with open(filename) as file_object:
     # for line in file_object:
     #     print(line.strip())
     lines = file_object.readlines()
 
-lower_c = 'c sharp'
+lower_c = "c sharp"
 # sep_string = ''
 for line in lines:
-    rep_line = line.replace('Python', lower_c.upper())
+    rep_line = line.replace("Python", lower_c.upper())
     print(rep_line)
 
 #     sep_string += line.strip()

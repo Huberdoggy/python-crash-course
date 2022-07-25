@@ -3,11 +3,11 @@
 import sys, math
 
 result_lst = []
-total = ''
+total = ""
 while True:
     try:
         prompt = input("Enter a number: ")
-        if prompt == 'q':
+        if prompt == "q":
             break
         # elif isinstance(prompt, float):
         #     prompt = float(prompt)
@@ -29,4 +29,3 @@ if len(result_lst) > 0:
 else:
     print("No calculation needed..good-bye")
     sys.exit()
-

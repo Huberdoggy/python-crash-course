@@ -150,6 +150,8 @@ crashlytics-build.properties
 fabric.properties
 
 # Additional Defined by Kyle
+.vscode/
+
 __init__.py
 # For security purposes
 secrets.txt
